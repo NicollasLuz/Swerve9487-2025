@@ -95,9 +95,17 @@ public class RobotContainer {
       )
     );
 
-    
-    new JoystickButton(xboxControle, XboxController.Button.kA.value)
-        .onTrue(new MoveToPosition(swerve, 0, 0));
+    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+      new JoystickButton(xboxControle, XboxController.Button.kB.value)
+          .onTrue(new MoveToPosition(swerve, 1.630, 7.328));
+      new JoystickButton(xboxControle, XboxController.Button.kX.value)
+          .onTrue(new MoveToPosition(swerve, 0.707, 1.346));
+    } else {
+      new JoystickButton(xboxControle, XboxController.Button.kB.value)
+          .onTrue(new MoveToPosition(swerve, 15.872, 7.364));
+      new JoystickButton(xboxControle, XboxController.Button.kX.value)
+          .onTrue(new MoveToPosition(swerve, 15.980, 0.758));
+    }
   }
 
   // Função que retorna o autônomo
