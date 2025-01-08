@@ -1,6 +1,9 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
@@ -8,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.Controle;
 import frc.robot.Constants.Trajetoria;
@@ -30,6 +34,7 @@ public class RobotContainer {
   private final XboxController xboxControle = new XboxController(
     Controle.xboxControle
   );
+  final CommandXboxController controleTeste = new CommandXboxController(3);
 
   public RobotContainer() {
 
@@ -71,6 +76,19 @@ public class RobotContainer {
       )
     );
     }
+
+    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+      new JoystickButton(xboxControle, XboxController.Button.kX.value)
+          .onTrue(new MoveToPosition(swerve, 1.630, 7.328));
+      new JoystickButton(xboxControle, XboxController.Button.kB.value)
+          .onTrue(new MoveToPosition(swerve, 0.707, 1.346));
+    } else if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+      new JoystickButton(xboxControle, XboxController.Button.kB.value)
+          .onTrue(new MoveToPosition(swerve, 15.872, 7.364));
+      new JoystickButton(xboxControle, XboxController.Button.kX.value)
+          .onTrue(new MoveToPosition(swerve, 15.980, 0.758));
+    }
+
   }
   
   //Heading Correction 
@@ -94,24 +112,13 @@ public class RobotContainer {
         swerve::disableHeading, swerve::resetHeading
     ));
 
-    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-      new JoystickButton(xboxControle, XboxController.Button.kB.value)
-          .onTrue(new MoveToPosition(swerve, 1.630, 7.328));
-      new JoystickButton(xboxControle, XboxController.Button.kX.value)
-          .onTrue(new MoveToPosition(swerve, 0.707, 1.346));
-    } else {
-      new JoystickButton(xboxControle, XboxController.Button.kB.value)
-          .onTrue(new MoveToPosition(swerve, 15.872, 7.364));
-      new JoystickButton(xboxControle, XboxController.Button.kX.value)
-          .onTrue(new MoveToPosition(swerve, 15.980, 0.758));
-    }
-    new JoystickButton(xboxControle, XboxController.Button.kX.value)
+    new JoystickButton(xboxControle, XboxController.Button.kRightBumper.value)
     .onTrue(new MoveToPosition(swerve, 8, 4));
-    
-    // new JoystickButton(xboxControle,XboxController.Button.kY.value).whileTrue(
-    //   swerve.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
-    // );
 
+    // controleTeste.b().whileTrue(
+    //   swerve.driveToPose(
+    //     new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
+    // );
   }
 
   // Função que retorna o autônomo
