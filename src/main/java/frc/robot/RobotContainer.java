@@ -1,6 +1,9 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
@@ -106,6 +109,11 @@ public class RobotContainer {
       new JoystickButton(xboxControle, XboxController.Button.kX.value)
           .onTrue(new MoveToPosition(swerve, 15.980, 0.758));
     }
+
+    new JoystickButton(xboxControle,XboxController.Button.kY.value).whileTrue(
+      swerve.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
+    );
+
   }
 
   // Função que retorna o autônomo
