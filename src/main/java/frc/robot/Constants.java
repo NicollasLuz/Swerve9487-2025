@@ -21,6 +21,8 @@ public final class Constants {
     public static final double LOOP_TIME = 0.13;
     // Massa do robô
     public static final double ROBOT_MASS = 38;
+    //Velocidade máxima
+    public static final double MAX_SPEED = 4;
 
     //Posições do centro de massa
     private static final double xMass = 0;
