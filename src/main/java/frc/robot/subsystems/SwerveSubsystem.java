@@ -31,7 +31,7 @@ import swervelib.parser.SwerveParser;
  */
 public class SwerveSubsystem extends SubsystemBase {
     // Objeto global da SwerveDrive (Classe YAGSL)
-    public SwerveDrive swerveDrive;
+    public static SwerveDrive swerveDrive;
     public boolean correctionPID = false;
 
     // Objeto global autônomo

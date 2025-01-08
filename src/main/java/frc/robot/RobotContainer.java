@@ -106,7 +106,8 @@ public class RobotContainer {
       new JoystickButton(xboxControle, XboxController.Button.kX.value)
           .onTrue(new MoveToPosition(swerve, 15.980, 0.758));
     }
-
+    new JoystickButton(xboxControle, XboxController.Button.kX.value)
+    .onTrue(new MoveToPosition(swerve, 8, 4));
     // new JoystickButton(xboxControle,XboxController.Button.kY.value).whileTrue(
     //   swerve.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
     // );
