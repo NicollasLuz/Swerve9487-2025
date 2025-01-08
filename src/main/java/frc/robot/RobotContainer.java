@@ -5,13 +5,18 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.Controle;
+import frc.robot.Constants.Trajetoria;
 import frc.robot.commands.MoveToPosition;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.SwerveSubsystem;
 import java.io.File;
+
+import com.pathplanner.lib.auto.NamedCommands;
 
 public class RobotContainer {
 
@@ -31,6 +36,7 @@ public class RobotContainer {
     // autoChooser = AutoBuilder.buildAutoChooser("a pecuaria tentara");
     // SmartDashboard.putData("Auto", autoChooser);
 
+    NamedCommands.registerCommand("Intake", new PrintCommand("Intake"));
 
     setDefaultCommands();
     registerAutoCommands();
@@ -67,33 +73,26 @@ public class RobotContainer {
     }
   }
   
-  private void registerAutoCommands() {
-
-  }
-
   //Heading Correction 
   public void setHeadingCorrection(boolean setHeadingCorrection){
     swerve.swerveDrive.setHeadingCorrection(setHeadingCorrection);
   }   
+
+  private void registerAutoCommands() {
+
+  }
 
   // Função onde os eventos (triggers) são configurados 
   private void configureBindings() {
     new JoystickButton(xboxControle, XboxController.Button.kA.value)
       .onTrue(new InstantCommand(
         swerve::resetGyro
-        ));
+    ));
 
-    new JoystickButton(xboxControle,XboxController.Button.kBack.value).onFalse(new SwerveCommand(
-        swerve,
-        () ->
-          -MathUtil.applyDeadband(xboxControle.getLeftY(), Controle.DEADBAND),
-        () ->
-          -MathUtil.applyDeadband(xboxControle.getLeftX(), Controle.DEADBAND),
-        () ->
-          -MathUtil.applyDeadband(xboxControle.getRightX(), Controle.DEADBAND),
-        () -> xboxControle.getRightBumperPressed()
-      )
-    );
+    new JoystickButton(xboxControle, XboxController.Button.kY.value)
+      .toggleOnTrue(Commands.startEnd(
+        swerve::disableHeading, swerve::resetHeading
+    ));
 
     if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
       new JoystickButton(xboxControle, XboxController.Button.kB.value)
@@ -108,6 +107,7 @@ public class RobotContainer {
     }
     new JoystickButton(xboxControle, XboxController.Button.kX.value)
     .onTrue(new MoveToPosition(swerve, 8, 4));
+    
     // new JoystickButton(xboxControle,XboxController.Button.kY.value).whileTrue(
     //   swerve.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
     // );
@@ -116,9 +116,7 @@ public class RobotContainer {
 
   // Função que retorna o autônomo
   public Command getAutonomousCommand() {
-
-    return null;
-
+    return swerve.getAutonomousCommand(Trajetoria.NOME_TRAJETORIA, true);
   }
 
   // Define os motores como coast ou brake

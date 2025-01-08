@@ -37,7 +37,7 @@ import swervelib.parser.SwerveParser;
  */
 public class SwerveSubsystem extends SubsystemBase {
     // Objeto global da SwerveDrive (Classe YAGSL)
-    public static SwerveDrive swerveDrive;
+    public SwerveDrive swerveDrive;
     //Variavel para ativar/desativar a correção do tanto que gira
     public boolean correctionPID = false;
 
